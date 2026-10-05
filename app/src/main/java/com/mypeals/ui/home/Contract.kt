@@ -1,8 +1,8 @@
 package com.mypeals.ui.home
 
-import com.mypeals.core.data.room.entities.Peal
+import com.mypeals.core.data.room.entities.Medication
 
 data class UIState(
-    val peals: List<Peal> = listOf(),
-    val loading : Boolean= false,
+    val medications: List<Medication> = listOf(),
+    val loading: Boolean = false,
 )

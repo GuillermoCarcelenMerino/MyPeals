@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -29,18 +29,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mypeals.R
-import com.mypeals.core.data.room.entities.Peal
-import com.mypeals.core.data.room.entities.PealType
+import com.mypeals.core.data.room.entities.Medication
+import com.mypeals.core.data.room.entities.MedicationType
 import kotlinx.coroutines.launch
-import kotlin.Int
-import kotlin.Unit
 
 @Composable
 fun HomeScreen(navigateAccount: () -> Unit, viewModel: HomeViewModel = hiltViewModel()) {
@@ -48,8 +46,8 @@ fun HomeScreen(navigateAccount: () -> Unit, viewModel: HomeViewModel = hiltViewM
     Home(
         navigateAccount,
         state.value,
-        { peal -> viewModel.addPeal(peal) },
-        { peal, quantity -> viewModel.updatePeal(peal, quantity) })
+        { medication -> viewModel.addMedication(medication) },
+        { medication, quantity -> viewModel.updateQuantity(medication, quantity) })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,8 +55,8 @@ fun HomeScreen(navigateAccount: () -> Unit, viewModel: HomeViewModel = hiltViewM
 fun Home(
     navigateAccount: () -> Unit,
     state: UIState,
-    function: (peal: Peal) -> Unit,
-    updateQuantity: (peal: Peal, quantity: Int) -> Unit
+    onAddMedication: (medication: Medication) -> Unit,
+    updateQuantity: (medication: Medication, quantity: Int) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -66,9 +64,9 @@ fun Home(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     if (!state.loading) {
-        ListPeals(
+        ListMedications(
             state = state,
-            onPealClick = {
+            onAddClick = {
                 showBottomSheet = true
                 scope.launch { sheetState.partialExpand() }
             },
@@ -81,32 +79,37 @@ fun Home(
             onDismissRequest = { showBottomSheet = false },
             sheetState = sheetState
         ) {
-            PealBottomSheetContent(function)
+            MedicationBottomSheetContent(onAddMedication)
         }
     }
 }
 
 @Composable
-fun PealBottomSheetContent(function: (peal: Peal) -> Unit) {
+fun MedicationBottomSheetContent(onAddMedication: (medication: Medication) -> Unit) {
 
     Column {
         Button(onClick = {
-            function(Peal(0, "pastilla1", 3, PealType.INJECTION))
+            // Datos de ejemplo hasta que exista el formulario de alta (Fase 3).
+            onAddMedication(Medication(0, "pastilla1", 3, MedicationType.INJECTION))
         }) {
-            Text("CLICA PARA CREAR LA PASTILLA")
+            Text(stringResource(R.string.create_medication_placeholder))
         }
     }
 }
 
 @Composable
-fun ListPeals(state: UIState, onPealClick: () -> Unit, updateQuantity: (Peal, Int) -> Unit) {
+fun ListMedications(
+    state: UIState,
+    onAddClick: () -> Unit,
+    updateQuantity: (Medication, Int) -> Unit
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        itemsIndexed(state.peals) { id, peal ->
+        items(state.medications, key = { it.id }) { medication ->
             Card(onClick = {}) {
                 Row(
                     Modifier
@@ -120,7 +123,7 @@ fun ListPeals(state: UIState, onPealClick: () -> Unit, updateQuantity: (Peal, In
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(peal.name, style = MaterialTheme.typography.titleLarge)
+                        Text(medication.name, style = MaterialTheme.typography.titleLarge)
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -133,30 +136,30 @@ fun ListPeals(state: UIState, onPealClick: () -> Unit, updateQuantity: (Peal, In
 
                         ) {
                             Button(shape = MaterialTheme.shapes.extraLarge, onClick = {
-                                updateQuantity(peal, peal.quantity - 1)
-                            }, enabled = peal.quantity >= 1) {
+                                updateQuantity(medication, medication.quantity - 1)
+                            }, enabled = medication.quantity >= 1) {
                                 Icon(
                                     painter = painterResource(R.drawable.menos_icon),
                                     tint = MaterialTheme.colorScheme.secondary,
-                                    contentDescription = "minus peals",
+                                    contentDescription = stringResource(R.string.decrease_quantity),
                                     modifier = Modifier
                                         .clip(CircleShape)
                                 )
                             }
                             Text(
-                                peal.quantity.toString(),
+                                medication.quantity.toString(),
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = Color.White
+                                color = MaterialTheme.colorScheme.onPrimary
                             )
 
                             Button(shape = MaterialTheme.shapes.extraLarge, onClick = {
-                                updateQuantity(peal, peal.quantity + 1)
+                                updateQuantity(medication, medication.quantity + 1)
                             }) {
 
                                 Icon(
                                     painter = painterResource(R.drawable.sumar_icon),
-                                    tint = Color.White,
-                                    contentDescription = "plus peals"
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                    contentDescription = stringResource(R.string.increase_quantity)
                                 )
 
                             }
@@ -170,8 +173,8 @@ fun ListPeals(state: UIState, onPealClick: () -> Unit, updateQuantity: (Peal, In
 
         }
         item {
-            Button(onClick = { onPealClick() }) {
-                Text("Añadir nuevo farmaco ")
+            Button(onClick = { onAddClick() }) {
+                Text(stringResource(R.string.add_medication))
             }
         }
     }
@@ -180,11 +183,15 @@ fun ListPeals(state: UIState, onPealClick: () -> Unit, updateQuantity: (Peal, In
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewHomeScreen() {
-    Home({}, UIState(peals = listOf(Peal(3, "", 3, PealType.INJECTION))), {}, {_,_ -> })
+    Home(
+        {},
+        UIState(medications = listOf(Medication(3, "", 3, MedicationType.INJECTION))),
+        {},
+        { _, _ -> })
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PreviewPealBottomSheetContent() {
-    PealBottomSheetContent({})
+fun PreviewMedicationBottomSheetContent() {
+    MedicationBottomSheetContent({})
 }

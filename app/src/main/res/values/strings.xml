@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">MyPeals</string>
+    <string name="app_name" translatable="false">MyPeals</string>
+    <string name="add_medication">Add new medication</string>
+    <string name="create_medication_placeholder">Tap to create the medication</string>
+    <string name="decrease_quantity">Decrease quantity</string>
+    <string name="increase_quantity">Increase quantity</string>
+    <string name="account_title">Account</string>
 </resources>

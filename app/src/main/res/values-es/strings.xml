@@ -1,0 +1,7 @@
+<resources>
+    <string name="add_medication">Añadir nuevo fármaco</string>
+    <string name="create_medication_placeholder">Pulsa para crear la medicación</string>
+    <string name="decrease_quantity">Disminuir cantidad</string>
+    <string name="increase_quantity">Aumentar cantidad</string>
+    <string name="account_title">Cuenta</string>
+</resources>

@@ -2,10 +2,10 @@ package com.mypeals.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.mypeals.core.data.repository.DatabaseRepositoryImpl
+import com.mypeals.core.data.repository.MedicationRepositoryImpl
 import com.mypeals.core.data.room.AppDataBase
-import com.mypeals.core.data.room.mappers.PealConverters
-import com.mypeals.core.domain.repository.DatabaseRepository
+import com.mypeals.core.data.room.mappers.MedicationConverters
+import com.mypeals.core.domain.repository.MedicationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -26,13 +26,12 @@ abstract class SingletonDi {
         ): AppDataBase = Room.databaseBuilder(
             context,
             AppDataBase::class.java, "myPealsDatabase"
-        ).addTypeConverter(PealConverters()).build()
+        ).addTypeConverter(MedicationConverters()).build()
     }
-
 
     @Binds
     @Singleton
-    abstract fun bindDatabaseRepository(
-        databaseRepositoryImpl: DatabaseRepositoryImpl
-    ): DatabaseRepository
+    abstract fun bindMedicationRepository(
+        medicationRepositoryImpl: MedicationRepositoryImpl
+    ): MedicationRepository
 }

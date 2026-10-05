@@ -1,81 +1,58 @@
 package com.mypeals.ui.home
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mypeals.core.data.room.entities.Peal
-import com.mypeals.core.domain.usercase.AddPealsUseCase
-import com.mypeals.core.domain.usercase.GetPealsUseCase
-import com.mypeals.core.domain.usercase.UpdatePealUseCase
+import com.mypeals.core.data.room.entities.Medication
+import com.mypeals.core.domain.usecase.AddMedicationUseCase
+import com.mypeals.core.domain.usecase.ObserveMedicationsUseCase
+import com.mypeals.core.domain.usecase.UpdateMedicationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.toList
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getPealsUseCase: GetPealsUseCase,
-    private val addPealsUseCase: AddPealsUseCase,
-    private val updatePealUseCase: UpdatePealUseCase
+    observeMedicationsUseCase: ObserveMedicationsUseCase,
+    private val addMedicationUseCase: AddMedicationUseCase,
+    private val updateMedicationUseCase: UpdateMedicationUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(UIState())
+    // La lista se alimenta del Flow de Room: cualquier alta o cambio se refleja solo.
+    val uiState: StateFlow<UIState> = observeMedicationsUseCase()
+        .map { UIState(medications = it, loading = false) }
+        .catch { error ->
+            Log.e(TAG, "Error al observar la medicación", error)
+            emit(UIState(loading = false))
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
+            initialValue = UIState(loading = true)
+        )
 
-    val uiState: StateFlow<UIState> = _uiState.asStateFlow()
-
-    init {
-        getAllPeals()
-    }
-
-    fun addPeal(peal: Peal) {
+    fun addMedication(medication: Medication) {
         viewModelScope.launch {
-            addPealsUseCase(peal).onSuccess {
-                Log.d("TAG", "getAllPeals: saxdas")
-
-            }.onFailure {
-                Log.d("TAG", "getAllPeals: saxdas")
-
+            addMedicationUseCase(medication).onFailure {
+                Log.e(TAG, "Error al añadir la medicación", it)
             }
         }
     }
 
-    private fun getAllPeals() {
+    fun updateQuantity(medication: Medication, quantity: Int) {
         viewModelScope.launch {
-            getPealsUseCase().onSuccess {
-                //todo add logs
-                _uiState.value = _uiState.value.copy(peals = it)
-            }.onFailure {
-                //todo add logs
-                Log.d("TAG", "getAllPeals: szadsa")
-            }
-
+            updateMedicationUseCase(medication.copy(quantity = quantity.coerceAtLeast(0)))
+                .onFailure { Log.e(TAG, "Error al actualizar la cantidad", it) }
         }
     }
 
-    fun updatePeal(peal: Peal, quantity: Int) {
-        viewModelScope.launch {
-            updatePealUseCase(peal).onSuccess {
-                //todo add logs
-                _uiState.value = _uiState.value.copy(
-                    peals = _uiState.value.peals.map { currentPeal ->
-                        if (currentPeal.id == peal.id) {
-                            currentPeal.copy(quantity = quantity)
-                        } else {
-                            currentPeal
-                        }
-                    }
-                )
-
-            }.onFailure {
-                //todo add logs
-                Log.d("TAG", "getAllPeals: szadsa")
-            }
-
-        }
+    private companion object {
+        const val TAG = "HomeViewModel"
+        const val STOP_TIMEOUT_MILLIS = 5_000L
     }
 }
