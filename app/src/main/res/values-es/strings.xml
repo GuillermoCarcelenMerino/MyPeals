@@ -1,7 +1,26 @@
 <resources>
+    <!-- Navegación -->
+    <string name="nav_treatments">Tratamientos</string>
+    <string name="nav_account">Cuenta</string>
+    <string name="back">Atrás</string>
+
+    <!-- Tratamientos -->
+    <string name="treatments_title">Tratamientos</string>
     <string name="add_medication">Añadir nuevo fármaco</string>
-    <string name="create_medication_placeholder">Pulsa para crear la medicación</string>
+    <string name="empty_treatments_title">Aún no tienes medicación</string>
+    <string name="empty_treatments_hint">Pulsa + para añadir tu primera medicación</string>
     <string name="decrease_quantity">Disminuir cantidad</string>
     <string name="increase_quantity">Aumentar cantidad</string>
+
+    <!-- Tipos de medicación -->
+    <string name="medication_type_pill">Pastilla</string>
+    <string name="medication_type_injection">Inyección</string>
+
+    <!-- Alta de medicación (provisional hasta la Fase 3) -->
+    <string name="add_medication_title">Nueva medicación</string>
+    <string name="add_medication_coming_soon">El formulario de medicación estará disponible pronto.</string>
+    <string name="create_sample_medication">Crear medicación de ejemplo</string>
+
+    <!-- Cuenta -->
     <string name="account_title">Cuenta</string>
 </resources>

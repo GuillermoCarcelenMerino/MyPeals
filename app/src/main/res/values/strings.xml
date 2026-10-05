@@ -1,8 +1,28 @@
 <resources>
     <string name="app_name" translatable="false">MyPeals</string>
+
+    <!-- Navegación -->
+    <string name="nav_treatments">Treatments</string>
+    <string name="nav_account">Account</string>
+    <string name="back">Back</string>
+
+    <!-- Tratamientos -->
+    <string name="treatments_title">Treatments</string>
     <string name="add_medication">Add new medication</string>
-    <string name="create_medication_placeholder">Tap to create the medication</string>
+    <string name="empty_treatments_title">No medication yet</string>
+    <string name="empty_treatments_hint">Tap + to add your first medication</string>
     <string name="decrease_quantity">Decrease quantity</string>
     <string name="increase_quantity">Increase quantity</string>
+
+    <!-- Tipos de medicación -->
+    <string name="medication_type_pill">Pill</string>
+    <string name="medication_type_injection">Injection</string>
+
+    <!-- Alta de medicación (provisional hasta la Fase 3) -->
+    <string name="add_medication_title">New medication</string>
+    <string name="add_medication_coming_soon">The medication form will be available soon.</string>
+    <string name="create_sample_medication">Create sample medication</string>
+
+    <!-- Cuenta -->
     <string name="account_title">Account</string>
 </resources>

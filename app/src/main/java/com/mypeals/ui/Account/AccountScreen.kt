@@ -3,6 +3,7 @@ package com.mypeals.ui.Account
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,7 +15,12 @@ import com.mypeals.R
 
 @Composable
 fun AccountScreen() {
-    Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+    ) {
 
         Button(onClick = {}) {
             Text(text = stringResource(R.string.account_title), style = MaterialTheme.typography.titleLarge)

@@ -32,14 +32,18 @@ fun MyPealsTheme(darkMode: Boolean = isSystemInDarkTheme(),content: @Composable 
 
 val myPealsLightColorPallete = lightColorScheme(
     primary = Color(0xFF4A7C59),
+    onPrimary = Color.White,
     secondary = Color(0xFFD1E8E2),
+    onSecondary = Color(0xFF1B3A32),
     background = Color.White,
     surface = Color(0xFFF4F9F7),
 )
 
 val myPealsDarkColorPallete = darkColorScheme(
     primary = Color(0xFF6FA07E),
+    onPrimary = Color(0xFF0B2216),
     secondary = Color(0xFF3B524C),
+    onSecondary = Color(0xFFD1E8E2),
     background = Color(0xFF121212),
     surface = Color(0xFF121212),
 )
