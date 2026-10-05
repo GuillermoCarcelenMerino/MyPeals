@@ -1,0 +1,57 @@
+# --- Gradle ---
+.gradle/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/**/build/
+
+# --- Kotlin ---
+.kotlin/
+
+# --- Configuración local (rutas específicas de cada máquina) ---
+local.properties
+
+# --- Android Studio / IntelliJ ---
+*.iml
+.idea/caches/
+.idea/libraries/
+.idea/modules/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/deploymentTargetSelector.xml
+.idea/deploymentTargetDropdown.xml
+.idea/other.xml
+.idea/migrations.xml
+.idea/markdown-exclusions.xml
+
+# --- Salidas de compilación y release ---
+*.apk
+*.aab
+*.ap_
+*.dex
+*.dm
+app/release/
+output-metadata.json
+
+# --- NDK / CMake ---
+.externalNativeBuild/
+.cxx/
+
+# --- Capturas y logs ---
+captures/
+*.log
+hs_err_pid*
+
+# --- Firma (nunca subir claves) ---
+*.jks
+*.keystore
+keystore.properties
+
+# --- Google services ---
+google-services.json
+
+# --- Sistema operativo ---
+.DS_Store
+Thumbs.db
+desktop.ini
