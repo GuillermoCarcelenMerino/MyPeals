@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.mypeals.core.data.repository.MedicationRepositoryImpl
 import com.mypeals.core.data.room.AppDataBase
-import com.mypeals.core.data.room.mappers.MedicationConverters
+import com.mypeals.core.data.room.migrations.MIGRATION_1_2
 import com.mypeals.core.domain.repository.MedicationRepository
 import dagger.Binds
 import dagger.Module
@@ -26,7 +26,7 @@ abstract class SingletonDi {
         ): AppDataBase = Room.databaseBuilder(
             context,
             AppDataBase::class.java, "myPealsDatabase"
-        ).addTypeConverter(MedicationConverters()).build()
+        ).addMigrations(MIGRATION_1_2).build()
     }
 
     @Binds

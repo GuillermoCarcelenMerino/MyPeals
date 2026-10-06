@@ -3,7 +3,7 @@ package com.mypeals.ui.treatments
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mypeals.core.data.room.entities.Medication
+import com.mypeals.core.domain.model.Medication
 import com.mypeals.core.domain.usecase.ObserveMedicationsUseCase
 import com.mypeals.core.domain.usecase.UpdateMedicationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,9 +34,9 @@ class TreatmentsViewModel @Inject constructor(
             initialValue = TreatmentsUiState(loading = true)
         )
 
-    fun updateQuantity(medication: Medication, quantity: Int) {
+    fun updateQuantity(medication: Medication, remainingUnits: Int) {
         viewModelScope.launch {
-            updateMedicationUseCase(medication.copy(quantity = quantity.coerceAtLeast(0)))
+            updateMedicationUseCase(medication.copy(remainingUnits = remainingUnits.coerceAtLeast(0)))
                 .onFailure { Log.e(TAG, "Error al actualizar la cantidad", it) }
         }
     }

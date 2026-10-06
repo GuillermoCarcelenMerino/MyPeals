@@ -2,13 +2,13 @@ package com.mypeals.core.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import com.mypeals.core.data.room.dao.IntakeLogDao
 import com.mypeals.core.data.room.dao.MedicationDao
-import com.mypeals.core.data.room.entities.Medication
-import com.mypeals.core.data.room.mappers.MedicationConverters
+import com.mypeals.core.data.room.entities.IntakeLogEntity
+import com.mypeals.core.data.room.entities.MedicationEntity
 
-@Database(entities = [Medication::class], version = 1)
-@TypeConverters(MedicationConverters::class)
+@Database(entities = [MedicationEntity::class, IntakeLogEntity::class], version = 2)
 abstract class AppDataBase : RoomDatabase() {
     abstract fun medicationDao(): MedicationDao
+    abstract fun intakeLogDao(): IntakeLogDao
 }

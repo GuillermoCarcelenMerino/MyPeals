@@ -36,8 +36,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mypeals.R
-import com.mypeals.core.data.room.entities.Medication
-import com.mypeals.core.data.room.entities.MedicationType
+import com.mypeals.core.domain.model.Frequency
+import com.mypeals.core.domain.model.FrequencyUnit
+import com.mypeals.core.domain.model.Medication
+import com.mypeals.core.domain.model.MedicationType
 import com.mypeals.core.theme.MyPealsTheme
 import com.mypeals.ui.common.labelRes
 
@@ -152,8 +154,8 @@ private fun MedicationCard(
                 )
             }
             IconButton(
-                onClick = { onQuantityChange(medication, medication.quantity - 1) },
-                enabled = medication.quantity > 0
+                onClick = { onQuantityChange(medication, medication.remainingUnits - 1) },
+                enabled = medication.remainingUnits > 0
             ) {
                 Icon(
                     painter = painterResource(R.drawable.menos_icon),
@@ -161,10 +163,10 @@ private fun MedicationCard(
                 )
             }
             Text(
-                text = medication.quantity.toString(),
+                text = medication.remainingUnits.toString(),
                 style = MaterialTheme.typography.titleMedium
             )
-            IconButton(onClick = { onQuantityChange(medication, medication.quantity + 1) }) {
+            IconButton(onClick = { onQuantityChange(medication, medication.remainingUnits + 1) }) {
                 Icon(
                     painter = painterResource(R.drawable.sumar_icon),
                     contentDescription = stringResource(R.string.increase_quantity)
@@ -201,8 +203,8 @@ private fun PreviewTreatmentsContent() {
         TreatmentsContent(
             state = TreatmentsUiState(
                 medications = listOf(
-                    Medication(1, "Ibuprofeno", 20, MedicationType.PEAL),
-                    Medication(2, "Insulina", 3, MedicationType.INJECTION)
+                    previewMedication(1, "Ibuprofeno", 20, MedicationType.PILL),
+                    previewMedication(2, "Insulina", 3, MedicationType.INJECTION)
                 )
             ),
             onAddMedication = {},
@@ -222,3 +224,12 @@ private fun PreviewTreatmentsEmpty() {
         )
     }
 }
+
+private fun previewMedication(id: Int, name: String, units: Int, type: MedicationType) = Medication(
+    id = id,
+    name = name,
+    type = type,
+    remainingUnits = units,
+    frequency = Frequency(interval = 8, unit = FrequencyUnit.HOURS),
+    firstIntakeAtMillis = 0L
+)

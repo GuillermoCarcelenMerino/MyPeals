@@ -1,6 +1,6 @@
 package com.mypeals.ui.treatments
 
-import com.mypeals.core.data.room.entities.Medication
+import com.mypeals.core.domain.model.Medication
 
 data class TreatmentsUiState(
     val medications: List<Medication> = listOf(),

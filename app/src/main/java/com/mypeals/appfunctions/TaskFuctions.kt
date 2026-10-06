@@ -2,8 +2,10 @@ package com.mypeals.appfunctions
 
 import androidx.appfunctions.AppFunctionContext
 import androidx.appfunctions.service.AppFunction
-import com.mypeals.core.data.room.entities.Medication
-import com.mypeals.core.data.room.entities.MedicationType
+import com.mypeals.core.domain.model.Frequency
+import com.mypeals.core.domain.model.FrequencyUnit
+import com.mypeals.core.domain.model.Medication
+import com.mypeals.core.domain.model.MedicationType
 import com.mypeals.core.domain.usecase.AddMedicationUseCase
 import javax.inject.Inject
 
@@ -26,16 +28,21 @@ class TaskFuctions @Inject constructor(
         quantity: Int
     ): String {
         return try {
+            // Por voz solo se indican nombre y cantidad: la medicación queda en pausa
+            // (sin avisos) hasta que el usuario configure su frecuencia en la app.
             val nuevaMedication = Medication(
-                id = 0,
                 name = nombre,
-                quantity = quantity,
-                type = MedicationType.PEAL
+                type = MedicationType.PILL,
+                remainingUnits = quantity,
+                frequency = Frequency(interval = 1, unit = FrequencyUnit.DAYS),
+                firstIntakeAtMillis = System.currentTimeMillis(),
+                active = false
             )
 
             addMedicationUseCase(nuevaMedication).fold(
                 onSuccess = {
-                    "Entendido, he añadido $nombre con $quantity pastillas a tus registros."
+                    "Entendido, he añadido $nombre con $quantity unidades a tus registros. " +
+                        "Configura su horario en la aplicación para recibir avisos."
                 },
                 onFailure = { error ->
                     "No pude guardar la medicación en este momento: ${error.localizedMessage}"

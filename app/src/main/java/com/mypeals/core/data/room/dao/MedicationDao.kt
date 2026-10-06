@@ -5,24 +5,25 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.mypeals.core.data.room.entities.Medication
+import com.mypeals.core.data.room.entities.MedicationEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MedicationDao {
 
-    @Query("SELECT * FROM peals ORDER BY id")
-    fun observeAll(): Flow<List<Medication>>
+    @Query("SELECT * FROM medications ORDER BY id")
+    fun observeAll(): Flow<List<MedicationEntity>>
 
-    @Query("SELECT * FROM peals WHERE id = :id")
-    suspend fun getMedication(id: Int): Medication?
+    @Query("SELECT * FROM medications WHERE id = :id")
+    suspend fun getMedication(id: Int): MedicationEntity?
+
+    /** Devuelve el id asignado (rowid) a la fila insertada. */
+    @Insert
+    suspend fun insert(medication: MedicationEntity): Long
 
     @Update
-    suspend fun updateMedication(medication: Medication)
+    suspend fun update(medication: MedicationEntity)
 
     @Delete
-    suspend fun deleteMedication(medication: Medication)
-
-    @Insert
-    suspend fun addMedication(medication: Medication)
+    suspend fun delete(medication: MedicationEntity)
 }

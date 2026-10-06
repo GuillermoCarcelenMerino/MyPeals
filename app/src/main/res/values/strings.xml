@@ -16,7 +16,18 @@
 
     <!-- Tipos de medicación -->
     <string name="medication_type_pill">Pill</string>
+    <string name="medication_type_capsule">Capsule</string>
+    <string name="medication_type_tablet">Tablet</string>
+    <string name="medication_type_sachet">Sachet</string>
     <string name="medication_type_injection">Injection</string>
+    <string name="medication_type_syrup">Syrup</string>
+    <string name="medication_type_drops">Drops</string>
+    <string name="medication_type_cream">Cream / ointment</string>
+    <string name="medication_type_inhaler">Inhaler</string>
+    <string name="medication_type_patch">Patch</string>
+    <string name="medication_type_suppository">Suppository</string>
+    <string name="medication_type_spray">Spray</string>
+    <string name="medication_type_other">Other</string>
 
     <!-- Alta de medicación (provisional hasta la Fase 3) -->
     <string name="add_medication_title">New medication</string>

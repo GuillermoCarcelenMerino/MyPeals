@@ -1,6 +1,6 @@
 package com.mypeals.core.domain.usecase
 
-import com.mypeals.core.data.room.entities.Medication
+import com.mypeals.core.domain.model.Medication
 import com.mypeals.core.domain.repository.MedicationRepository
 import com.mypeals.core.domain.util.runCatchingCancellable
 import javax.inject.Inject
