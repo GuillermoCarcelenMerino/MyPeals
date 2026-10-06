@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.navigation3.runtime.NavKey
 import com.mypeals.R
-import com.mypeals.ui.Account.AccountNavigation
+import com.mypeals.ui.history.HistoryNavigation
 import com.mypeals.ui.treatments.TreatmentsNavigation
 
 /** Destino de primer nivel: aparece como pestaña en la bottom bar. */
@@ -26,8 +26,8 @@ val topLevelDestinations: List<TopLevelDestination> = listOf(
         icon = R.drawable.ic_treatments
     ),
     TopLevelDestination(
-        key = AccountNavigation.Profile,
-        label = R.string.nav_account,
-        icon = R.drawable.ic_account
+        key = HistoryNavigation.History,
+        label = R.string.nav_history,
+        icon = R.drawable.ic_history
     ),
 )

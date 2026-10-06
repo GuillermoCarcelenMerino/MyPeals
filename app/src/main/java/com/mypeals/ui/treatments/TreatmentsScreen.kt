@@ -35,6 +35,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
+import android.text.format.DateUtils
+import com.mypeals.core.domain.model.nextIntakeAfter
+import com.mypeals.ui.common.StatusBadge
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -177,6 +181,18 @@ private fun MedicationCard(
     var confirmDelete by remember { mutableStateOf(false) }
     val stock = remember(medication) { medication.stockStatus() }
     val lowStock = remember(medication) { medication.isStockLow() }
+    val context = LocalContext.current
+    val nextIntake = remember(medication) {
+        if (!medication.active) {
+            null
+        } else {
+            medication.nextIntakeAfter(System.currentTimeMillis())?.let {
+                DateUtils.getRelativeDateTimeString(
+                    context, it, DateUtils.DAY_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0
+                ).toString()
+            }
+        }
+    }
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -197,20 +213,32 @@ private fun MedicationCard(
                     text = stringResource(medication.type.labelRes()),
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                StockInfo(stock)
-                if (!medication.active) {
+                if (nextIntake != null) {
                     Text(
-                        text = stringResource(R.string.treatment_paused),
-                        style = MaterialTheme.typography.titleSmall
+                        text = stringResource(R.string.next_intake, nextIntake),
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
-                if (lowStock) {
-                    Text(
-                        text = stringResource(R.string.stock_low),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.error
-                    )
+                Spacer(modifier = Modifier.height(8.dp))
+                StockInfo(stock)
+                if (!medication.active || lowStock) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        if (!medication.active) {
+                            StatusBadge(
+                                text = stringResource(R.string.treatment_paused),
+                                containerColor = MaterialTheme.colorScheme.surface,
+                                contentColor = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        if (lowStock) {
+                            StatusBadge(
+                                text = stringResource(R.string.stock_low),
+                                containerColor = MaterialTheme.colorScheme.errorContainer,
+                                contentColor = MaterialTheme.colorScheme.onErrorContainer
+                            )
+                        }
+                    }
                 }
             }
             IconButton(

@@ -2,6 +2,7 @@ package com.mypeals.core.domain.usecase
 
 import com.mypeals.core.domain.model.Frequency
 import com.mypeals.core.domain.model.FrequencyUnit
+import com.mypeals.core.domain.model.IntakeLog
 import com.mypeals.core.domain.model.IntakeStatus
 import com.mypeals.core.domain.model.Medication
 import com.mypeals.core.domain.model.MedicationType
@@ -20,6 +21,7 @@ private class FakeRepository : MedicationRepository {
     private var nextId = 1
 
     override fun observeMedications(): Flow<List<Medication>> = items
+    override fun observeIntakeLog(sinceMillis: Long): Flow<List<IntakeLog>> = MutableStateFlow(emptyList())
     override suspend fun getMedication(id: Int) = items.value.firstOrNull { it.id == id }
     override suspend fun addMedication(medication: Medication): Int {
         val id = nextId++

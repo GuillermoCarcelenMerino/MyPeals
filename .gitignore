@@ -46,7 +46,13 @@ hs_err_pid*
 # --- Firma (nunca subir claves) ---
 *.jks
 *.keystore
+*.p12
+*.pfx
+*.pem
+*.pepk
+keystore/
 keystore.properties
+# (keystore.properties.example sí se sube: es solo la plantilla)
 
 # --- Google services ---
 google-services.json
@@ -55,3 +61,35 @@ google-services.json
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# --- Secretos y credenciales ---
+.env
+.env.*
+*.secret
+service-account*.json
+play-store-credentials*.json
+
+# --- Mapping de R8 y símbolos (se suben a Play, no al repositorio) ---
+app/build/outputs/mapping/
+mapping.txt
+
+# --- Android Studio: archivos personales ---
+.idea/shelf/
+.idea/dictionaries/
+.idea/caches/
+.idea/copilot/
+.idea/ChatHistory*
+.idea/AndroidProjectSystem.xml.bak
+
+# --- Herramientas de IA / asistentes locales ---
+.claude/
+.cursor/
+.gemini/
+
+# --- Volcados de memoria y temporales ---
+*.hprof
+*.orig
+*.rej
+*.swp
+*.tmp
+*~

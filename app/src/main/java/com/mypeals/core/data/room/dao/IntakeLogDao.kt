@@ -12,6 +12,9 @@ interface IntakeLogDao {
     @Query("SELECT * FROM intake_log WHERE medication_id = :medicationId ORDER BY scheduled_at DESC")
     fun observeByMedication(medicationId: Int): Flow<List<IntakeLogEntity>>
 
+    @Query("SELECT * FROM intake_log WHERE scheduled_at >= :sinceMillis ORDER BY scheduled_at DESC")
+    fun observeSince(sinceMillis: Long): Flow<List<IntakeLogEntity>>
+
     @Insert
     suspend fun insert(entry: IntakeLogEntity): Long
 }

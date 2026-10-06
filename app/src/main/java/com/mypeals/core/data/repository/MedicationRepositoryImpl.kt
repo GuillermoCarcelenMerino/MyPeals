@@ -4,6 +4,7 @@ import com.mypeals.core.data.room.AppDataBase
 import com.mypeals.core.data.room.entities.IntakeLogEntity
 import com.mypeals.core.data.room.mappers.toDomain
 import com.mypeals.core.data.room.mappers.toEntity
+import com.mypeals.core.domain.model.IntakeLog
 import com.mypeals.core.domain.model.IntakeStatus
 import com.mypeals.core.domain.model.Medication
 import com.mypeals.core.domain.repository.MedicationRepository
@@ -16,6 +17,9 @@ class MedicationRepositoryImpl @Inject constructor(private val database: AppData
 
     override fun observeMedications(): Flow<List<Medication>> =
         database.medicationDao().observeAll().map { entities -> entities.map { it.toDomain() } }
+
+    override fun observeIntakeLog(sinceMillis: Long): Flow<List<IntakeLog>> =
+        database.intakeLogDao().observeSince(sinceMillis).map { entities -> entities.map { it.toDomain() } }
 
     override suspend fun getMedication(id: Int): Medication? =
         database.medicationDao().getMedication(id)?.toDomain()

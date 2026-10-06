@@ -3,7 +3,7 @@
 
     <!-- Navegación -->
     <string name="nav_treatments">Treatments</string>
-    <string name="nav_account">Account</string>
+    <string name="nav_history">History</string>
     <string name="back">Back</string>
 
     <!-- Tratamientos -->
@@ -33,7 +33,6 @@
     <string name="add_medication_title">New medication</string>
 
     <!-- Cuenta -->
-    <string name="account_title">Account</string>
 
     <!-- Formulario de alta -->
     <string name="form_name">Name</string>
@@ -99,4 +98,21 @@
     <string name="treatment_paused">Paused</string>
     <string name="delete_confirm_title">Delete medication?</string>
     <string name="delete_confirm_message">%s and its reminders will be deleted. This cannot be undone.</string>
+    <string name="history_title">History</string>
+    <string name="history_today">Today</string>
+    <string name="history_yesterday">Yesterday</string>
+    <plurals name="history_dose">
+        <item quantity="one">%d unit</item>
+        <item quantity="other">%d units</item>
+    </plurals>
+    <string name="history_taken_at">Taken at %s</string>
+    <string name="history_mark_taken">Mark as taken</string>
+    <string name="history_state_taken">Taken</string>
+    <string name="history_state_missed">Missed</string>
+    <string name="history_state_snoozed">Snoozed</string>
+    <string name="history_state_skipped">Skipped</string>
+    <string name="history_state_pending">Pending</string>
+    <string name="history_empty_title">No doses to show yet</string>
+    <string name="history_empty_hint">Your scheduled doses, and whether you took them, will appear here.</string>
+    <string name="next_intake">Next dose: %s</string>
 </resources>

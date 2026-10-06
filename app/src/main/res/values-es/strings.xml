@@ -1,7 +1,7 @@
 <resources>
     <!-- Navegación -->
     <string name="nav_treatments">Tratamientos</string>
-    <string name="nav_account">Cuenta</string>
+    <string name="nav_history">Historial</string>
     <string name="back">Atrás</string>
 
     <!-- Tratamientos -->
@@ -31,7 +31,6 @@
     <string name="add_medication_title">Nueva medicación</string>
 
     <!-- Cuenta -->
-    <string name="account_title">Cuenta</string>
 
     <!-- Formulario de alta -->
     <string name="form_name">Nombre</string>
@@ -97,4 +96,21 @@
     <string name="treatment_paused">En pausa</string>
     <string name="delete_confirm_title">¿Eliminar medicación?</string>
     <string name="delete_confirm_message">Se eliminarán %s y sus recordatorios. Esta acción no se puede deshacer.</string>
+    <string name="history_title">Historial</string>
+    <string name="history_today">Hoy</string>
+    <string name="history_yesterday">Ayer</string>
+    <plurals name="history_dose">
+        <item quantity="one">%d unidad</item>
+        <item quantity="other">%d unidades</item>
+    </plurals>
+    <string name="history_taken_at">Tomada a las %s</string>
+    <string name="history_mark_taken">Marcar como tomada</string>
+    <string name="history_state_taken">Tomada</string>
+    <string name="history_state_missed">No tomada</string>
+    <string name="history_state_snoozed">Pospuesta</string>
+    <string name="history_state_skipped">Omitida</string>
+    <string name="history_state_pending">Pendiente</string>
+    <string name="history_empty_title">Aún no hay tomas que mostrar</string>
+    <string name="history_empty_hint">Aquí verás las tomas que te tocaban y si las tomaste o no.</string>
+    <string name="next_intake">Próxima toma: %s</string>
 </resources>
