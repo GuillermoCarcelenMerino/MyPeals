@@ -61,4 +61,20 @@
     <string name="error_required">Required</string>
     <string name="error_positive_number">Enter a number greater than 0</string>
     <string name="error_save">Could not save the medication. Please try again.</string>
+
+    <!-- Estado del stock -->
+    <plurals name="stock_boxes">
+        <item quantity="one">%d box</item>
+        <item quantity="other">%d boxes</item>
+    </plurals>
+    <plurals name="stock_last_box">
+        <item quantity="one">Last box: %d unit</item>
+        <item quantity="other">Last box: %d units</item>
+    </plurals>
+    <plurals name="stock_units_in_current_box">
+        <item quantity="one">%d unit in the current box</item>
+        <item quantity="other">%d units in the current box</item>
+    </plurals>
+    <string name="stock_empty">Out of stock</string>
+    <string name="stock_low">Low stock</string>
 </resources>

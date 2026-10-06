@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,8 +43,12 @@ import com.mypeals.core.domain.model.Frequency
 import com.mypeals.core.domain.model.FrequencyUnit
 import com.mypeals.core.domain.model.Medication
 import com.mypeals.core.domain.model.MedicationType
+import com.mypeals.core.domain.model.StockStatus
+import com.mypeals.core.domain.model.isStockLow
+import com.mypeals.core.domain.model.stockStatus
 import com.mypeals.core.theme.MyPealsTheme
 import com.mypeals.ui.common.labelRes
+import com.mypeals.ui.common.quantityStringResource
 
 @Composable
 fun TreatmentsScreen(
@@ -133,6 +140,9 @@ private fun MedicationCard(
     onQuantityChange: (Medication, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val stock = remember(medication) { medication.stockStatus() }
+    val lowStock = remember(medication) { medication.isStockLow() }
+
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -152,6 +162,15 @@ private fun MedicationCard(
                     text = stringResource(medication.type.labelRes()),
                     style = MaterialTheme.typography.bodyMedium
                 )
+                Spacer(modifier = Modifier.height(8.dp))
+                StockInfo(stock)
+                if (lowStock) {
+                    Text(
+                        text = stringResource(R.string.stock_low),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
             }
             IconButton(
                 onClick = { onQuantityChange(medication, medication.remainingUnits - 1) },
@@ -162,16 +181,48 @@ private fun MedicationCard(
                     contentDescription = stringResource(R.string.decrease_quantity)
                 )
             }
-            Text(
-                text = medication.remainingUnits.toString(),
-                style = MaterialTheme.typography.titleMedium
-            )
             IconButton(onClick = { onQuantityChange(medication, medication.remainingUnits + 1) }) {
                 Icon(
                     painter = painterResource(R.drawable.sumar_icon),
                     contentDescription = stringResource(R.string.increase_quantity)
                 )
             }
+        }
+    }
+}
+
+/** Cajas y unidades restantes; en la última caja solo se muestran las unidades. */
+@Composable
+private fun StockInfo(status: StockStatus) {
+    when (status) {
+        StockStatus.Empty -> Text(
+            text = stringResource(R.string.stock_empty),
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        is StockStatus.BoxesOnly -> Text(
+            text = quantityStringResource(R.plurals.stock_boxes, status.boxes, status.boxes),
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        is StockStatus.LastBox -> Text(
+            text = quantityStringResource(R.plurals.stock_last_box, status.units, status.units),
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        is StockStatus.MultipleBoxes -> {
+            Text(
+                text = quantityStringResource(R.plurals.stock_boxes, status.boxes, status.boxes),
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = quantityStringResource(
+                    R.plurals.stock_units_in_current_box,
+                    status.unitsInCurrentBox,
+                    status.unitsInCurrentBox
+                ),
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
@@ -203,8 +254,10 @@ private fun PreviewTreatmentsContent() {
         TreatmentsContent(
             state = TreatmentsUiState(
                 medications = listOf(
-                    previewMedication(1, "Ibuprofeno", 20, MedicationType.PILL),
-                    previewMedication(2, "Insulina", 3, MedicationType.INJECTION)
+                    previewMedication(1, "Ibuprofeno", 45, MedicationType.PILL, unitsPerBox = 20),
+                    previewMedication(2, "Insulina", 3, MedicationType.INJECTION),
+                    previewMedication(3, "Amoxicilina", 8, MedicationType.CAPSULE, unitsPerBox = 30),
+                    previewMedication(4, "Omeprazol", 0, MedicationType.CAPSULE, unitsPerBox = 14)
                 )
             ),
             onAddMedication = {},
@@ -225,10 +278,17 @@ private fun PreviewTreatmentsEmpty() {
     }
 }
 
-private fun previewMedication(id: Int, name: String, units: Int, type: MedicationType) = Medication(
+private fun previewMedication(
+    id: Int,
+    name: String,
+    units: Int,
+    type: MedicationType,
+    unitsPerBox: Int? = null
+) = Medication(
     id = id,
     name = name,
     type = type,
+    unitsPerBox = unitsPerBox,
     remainingUnits = units,
     frequency = Frequency(interval = 8, unit = FrequencyUnit.HOURS),
     firstIntakeAtMillis = 0L

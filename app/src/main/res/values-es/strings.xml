@@ -59,4 +59,20 @@
     <string name="error_required">Obligatorio</string>
     <string name="error_positive_number">Introduce un número mayor que 0</string>
     <string name="error_save">No se pudo guardar la medicación. Inténtalo de nuevo.</string>
+
+    <!-- Estado del stock -->
+    <plurals name="stock_boxes">
+        <item quantity="one">%d caja</item>
+        <item quantity="other">%d cajas</item>
+    </plurals>
+    <plurals name="stock_last_box">
+        <item quantity="one">Última caja: %d unidad</item>
+        <item quantity="other">Última caja: %d unidades</item>
+    </plurals>
+    <plurals name="stock_units_in_current_box">
+        <item quantity="one">%d unidad en la caja actual</item>
+        <item quantity="other">%d unidades en la caja actual</item>
+    </plurals>
+    <string name="stock_empty">Sin stock</string>
+    <string name="stock_low">Stock bajo</string>
 </resources>
