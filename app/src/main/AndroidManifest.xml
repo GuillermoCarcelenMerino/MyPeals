@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:name=".Application"
@@ -26,6 +30,26 @@
         <meta-data
             android:name="androidx.appfunctions.APP_FUNCTION_CONFIGURATION"
             android:value="com.mypeals.appfunctions.MyPealsAppFunctionConfiguration" />
+
+        <receiver
+            android:name=".core.data.reminders.ReminderReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".core.data.reminders.ReminderActionReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".core.data.reminders.BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".MainActivity"

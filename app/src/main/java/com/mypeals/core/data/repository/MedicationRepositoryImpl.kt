@@ -1,8 +1,10 @@
 package com.mypeals.core.data.repository
 
 import com.mypeals.core.data.room.AppDataBase
+import com.mypeals.core.data.room.entities.IntakeLogEntity
 import com.mypeals.core.data.room.mappers.toDomain
 import com.mypeals.core.data.room.mappers.toEntity
+import com.mypeals.core.domain.model.IntakeStatus
 import com.mypeals.core.domain.model.Medication
 import com.mypeals.core.domain.repository.MedicationRepository
 import kotlinx.coroutines.flow.Flow
@@ -26,4 +28,25 @@ class MedicationRepositoryImpl @Inject constructor(private val database: AppData
 
     override suspend fun deleteMedication(medication: Medication) =
         database.medicationDao().delete(medication.toEntity())
+
+    override suspend fun registerIntake(
+        medicationId: Int,
+        scheduledAtMillis: Long,
+        atMillis: Long,
+        status: IntakeStatus
+    ) {
+        // El historial va primero: su clave foránea falla si la medicación ya no existe.
+        database.intakeLogDao().insert(
+            IntakeLogEntity(
+                medicationId = medicationId,
+                scheduledAt = scheduledAtMillis,
+                takenAt = if (status == IntakeStatus.TAKEN) atMillis else null,
+                status = status
+            )
+        )
+        if (status == IntakeStatus.TAKEN) {
+            val dose = database.medicationDao().getMedication(medicationId)?.dosePerIntake ?: 1
+            database.medicationDao().consumeUnits(medicationId, dose)
+        }
+    }
 }

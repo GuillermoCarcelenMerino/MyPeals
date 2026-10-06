@@ -26,4 +26,8 @@ interface MedicationDao {
 
     @Delete
     suspend fun delete(medication: MedicationEntity)
+
+    /** Descuenta unidades de forma atómica, sin bajar de cero. */
+    @Query("UPDATE medications SET remaining_units = MAX(remaining_units - :units, 0) WHERE id = :id")
+    suspend fun consumeUnits(id: Int, units: Int)
 }

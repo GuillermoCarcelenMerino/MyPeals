@@ -1,5 +1,6 @@
 package com.mypeals.core.domain.repository
 
+import com.mypeals.core.domain.model.IntakeStatus
 import com.mypeals.core.domain.model.Medication
 import kotlinx.coroutines.flow.Flow
 
@@ -11,4 +12,15 @@ interface MedicationRepository {
     suspend fun addMedication(medication: Medication): Int
     suspend fun updateMedication(medication: Medication)
     suspend fun deleteMedication(medication: Medication)
+
+    /**
+     * Anota en el historial lo ocurrido con una toma. Con [IntakeStatus.TAKEN] descuenta además
+     * la dosis del stock (sin bajar de cero).
+     */
+    suspend fun registerIntake(
+        medicationId: Int,
+        scheduledAtMillis: Long,
+        atMillis: Long,
+        status: IntakeStatus
+    )
 }

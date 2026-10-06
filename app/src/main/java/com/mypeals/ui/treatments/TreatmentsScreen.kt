@@ -59,7 +59,8 @@ fun TreatmentsScreen(
     TreatmentsContent(
         state = state,
         onAddMedication = onAddMedication,
-        onQuantityChange = viewModel::updateQuantity
+        onQuantityChange = viewModel::updateQuantity,
+        banner = { ReminderPermissionsBanner() }
     )
 }
 
@@ -68,7 +69,8 @@ fun TreatmentsScreen(
 fun TreatmentsContent(
     state: TreatmentsUiState,
     onAddMedication: () -> Unit,
-    onQuantityChange: (Medication, Int) -> Unit
+    onQuantityChange: (Medication, Int) -> Unit,
+    banner: @Composable () -> Unit = {}
 ) {
     Scaffold(
         // La bottom bar y el resto de insets los gestiona el Scaffold de MyPealsApp.
@@ -85,18 +87,21 @@ fun TreatmentsContent(
         },
         floatingActionButton = { AddMedicationFab(onClick = onAddMedication) }
     ) { innerPadding ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            when {
-                state.loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
-                state.medications.isEmpty() -> EmptyTreatments(Modifier.align(Alignment.Center))
-                else -> MedicationList(
-                    medications = state.medications,
-                    onQuantityChange = onQuantityChange
-                )
+            banner()
+            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                when {
+                    state.loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
+                    state.medications.isEmpty() -> EmptyTreatments(Modifier.align(Alignment.Center))
+                    else -> MedicationList(
+                        medications = state.medications,
+                        onQuantityChange = onQuantityChange
+                    )
+                }
             }
         }
     }

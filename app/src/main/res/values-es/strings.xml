@@ -75,4 +75,16 @@
     </plurals>
     <string name="stock_empty">Sin stock</string>
     <string name="stock_low">Stock bajo</string>
+    <string name="reminder_channel_name">Recordatorios de medicación</string>
+    <string name="reminder_channel_description">Avisos cuando toca tomar una medicación</string>
+    <string name="reminder_title">Toca tomar %s</string>
+    <plurals name="reminder_dose">
+        <item quantity="one">Toma %d unidad</item>
+        <item quantity="other">Toma %d unidades</item>
+    </plurals>
+    <string name="reminder_action_taken">Tomada</string>
+    <string name="reminder_action_snooze">Posponer %d min</string>
+    <string name="reminder_permission_notifications">Permite las notificaciones para que MyPeals te recuerde tomar tu medicación.</string>
+    <string name="reminder_permission_exact_alarms">Permite las alarmas exactas para que los avisos lleguen a su hora.</string>
+    <string name="reminder_permission_allow">Permitir</string>
 </resources>
