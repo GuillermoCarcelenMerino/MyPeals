@@ -31,9 +31,34 @@
 
     <!-- Alta de medicación (provisional hasta la Fase 3) -->
     <string name="add_medication_title">New medication</string>
-    <string name="add_medication_coming_soon">The medication form will be available soon.</string>
-    <string name="create_sample_medication">Create sample medication</string>
 
     <!-- Cuenta -->
     <string name="account_title">Account</string>
+
+    <!-- Formulario de alta -->
+    <string name="form_name">Name</string>
+    <string name="form_type">Type</string>
+    <string name="form_boxes">Number of boxes</string>
+    <string name="form_units_per_box">Units box (opt)</string>
+    <string name="form_dose">Units per intake</string>
+    <string name="form_frequency">Frequency</string>
+    <string name="frequency_every">Every</string>
+    <string name="frequency_hours">Hours</string>
+    <string name="frequency_days">Days</string>
+    <string name="frequency_weeks">Weeks</string>
+    <string name="form_weekdays">Days of the week (optional)</string>
+    <string name="weekday_mon">Mon</string>
+    <string name="weekday_tue">Tue</string>
+    <string name="weekday_wed">Wed</string>
+    <string name="weekday_thu">Thu</string>
+    <string name="weekday_fri">Fri</string>
+    <string name="weekday_sat">Sat</string>
+    <string name="weekday_sun">Sun</string>
+    <string name="form_first_intake">First intake</string>
+    <string name="form_save">Save</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="error_required">Required</string>
+    <string name="error_positive_number">Enter a number greater than 0</string>
+    <string name="error_save">Could not save the medication. Please try again.</string>
 </resources>
