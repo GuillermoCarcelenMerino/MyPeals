@@ -9,8 +9,8 @@
     <string name="add_medication">Añadir nuevo fármaco</string>
     <string name="empty_treatments_title">Aún no tienes medicación</string>
     <string name="empty_treatments_hint">Pulsa + para añadir tu primera medicación</string>
-    <string name="decrease_quantity">Disminuir cantidad</string>
-    <string name="increase_quantity">Aumentar cantidad</string>
+    <string name="decrease_quantity">Disminuir cantidad de %s</string>
+    <string name="increase_quantity">Aumentar cantidad de %s</string>
 
     <!-- Tipos de medicación -->
     <string name="medication_type_pill">Pastilla</string>
@@ -87,4 +87,14 @@
     <string name="reminder_permission_notifications">Permite las notificaciones para que MyPeals te recuerde tomar tu medicación.</string>
     <string name="reminder_permission_exact_alarms">Permite las alarmas exactas para que los avisos lleguen a su hora.</string>
     <string name="reminder_permission_allow">Permitir</string>
+    <string name="edit_medication_title">Editar medicación</string>
+    <string name="error_load">No se pudo cargar la medicación.</string>
+    <string name="more_options">Más opciones de %s</string>
+    <string name="menu_edit">Editar</string>
+    <string name="menu_pause">Pausar tratamiento</string>
+    <string name="menu_resume">Reanudar tratamiento</string>
+    <string name="menu_delete">Eliminar</string>
+    <string name="treatment_paused">En pausa</string>
+    <string name="delete_confirm_title">¿Eliminar medicación?</string>
+    <string name="delete_confirm_message">Se eliminarán %s y sus recordatorios. Esta acción no se puede deshacer.</string>
 </resources>

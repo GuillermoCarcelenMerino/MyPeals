@@ -29,10 +29,19 @@ data class AddMedicationUiState(
     /** Los errores solo se muestran tras el primer intento de guardar. */
     val showErrors: Boolean = false,
     val saving: Boolean = false,
-    val saveFailed: Boolean = false
+    val saveFailed: Boolean = false,
+    /** Distinto de null cuando se edita una medicación existente. */
+    val editingId: Int? = null,
+    /** Al editar se conserva el stock actual: el formulario no lo modifica. */
+    val editingRemainingUnits: Int = 0,
+    val editingActive: Boolean = true,
+    /** True si no se pudo cargar la medicación que se iba a editar. */
+    val loadFailed: Boolean = false
 ) {
+    val isEditing: Boolean get() = editingId != null
+
     val nameError: Boolean get() = name.isBlank()
-    val boxesError: Boolean get() = boxes.toPositiveIntOrNull() == null
+    val boxesError: Boolean get() = !isEditing && boxes.toPositiveIntOrNull() == null
     val unitsPerBoxError: Boolean
         get() = unitsPerBox.isNotEmpty() && unitsPerBox.toPositiveIntOrNull() == null
     val doseError: Boolean get() = dosePerIntake.toPositiveIntOrNull() == null
@@ -44,14 +53,20 @@ data class AddMedicationUiState(
     /** Devuelve la medicación lista para guardar, o null si el formulario no es válido. */
     fun toMedication(timeZone: TimeZone = TimeZone.getDefault()): Medication? {
         if (!isValid) return null
-        val boxCount = boxes.toPositiveIntOrNull() ?: return null
         val perBox = unitsPerBox.toPositiveIntOrNull()
+        val remaining = if (isEditing) {
+            editingRemainingUnits
+        } else {
+            // Sin unidades por caja, cada unidad equivale a una caja entera.
+            (boxes.toPositiveIntOrNull() ?: return null) * (perBox ?: 1)
+        }
         return Medication(
+            id = editingId ?: 0,
+            active = editingActive,
             name = name.trim(),
             type = type,
             unitsPerBox = perBox,
-            // Sin unidades por caja, cada unidad equivale a una caja entera.
-            remainingUnits = boxCount * (perBox ?: 1),
+            remainingUnits = remaining,
             dosePerIntake = dosePerIntake.toPositiveIntOrNull() ?: return null,
             frequency = Frequency(
                 interval = frequencyInterval.toPositiveIntOrNull() ?: return null,
@@ -63,6 +78,31 @@ data class AddMedicationUiState(
     }
 
     companion object {
+        /** Formulario relleno con los datos de una medicación existente. */
+        fun fromMedication(
+            medication: Medication,
+            timeZone: TimeZone = TimeZone.getDefault()
+        ): AddMedicationUiState {
+            val first = Calendar.getInstance(timeZone).apply {
+                timeInMillis = medication.firstIntakeAtMillis
+            }
+            return AddMedicationUiState(
+                name = medication.name,
+                type = medication.type,
+                unitsPerBox = medication.unitsPerBox?.toString().orEmpty(),
+                dosePerIntake = medication.dosePerIntake.toString(),
+                frequencyInterval = medication.frequency.interval.toString(),
+                frequencyUnit = medication.frequency.unit,
+                weekdays = medication.frequency.daysOfWeek,
+                startDateUtcMillis = localDateToUtcMillis(medication.firstIntakeAtMillis, timeZone),
+                startHour = first.get(Calendar.HOUR_OF_DAY),
+                startMinute = first.get(Calendar.MINUTE),
+                editingId = medication.id,
+                editingRemainingUnits = medication.remainingUnits,
+                editingActive = medication.active
+            )
+        }
+
         /** Formulario vacío con la primera toma propuesta a la siguiente hora en punto. */
         fun initial(
             nowMillis: Long = System.currentTimeMillis(),

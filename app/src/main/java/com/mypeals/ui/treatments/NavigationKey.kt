@@ -12,4 +12,8 @@ sealed class TreatmentsNavigation : NavKey {
     /** Pantalla secundaria para añadir una medicación. */
     @Serializable
     data object AddMedication : TreatmentsNavigation()
+
+    /** Pantalla secundaria para editar una medicación existente. */
+    @Serializable
+    data class EditMedication(val medicationId: Int) : TreatmentsNavigation()
 }

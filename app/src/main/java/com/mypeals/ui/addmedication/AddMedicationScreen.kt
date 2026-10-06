@@ -33,6 +33,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -78,9 +79,11 @@ class AddMedicationActions(
 @Composable
 fun AddMedicationScreen(
     onBack: () -> Unit,
+    medicationId: Int? = null,
     viewModel: AddMedicationViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    LaunchedEffect(medicationId) { medicationId?.let(viewModel::load) }
     AddMedicationContent(
         state = state,
         actions = AddMedicationActions(
@@ -111,7 +114,10 @@ fun AddMedicationContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.add_medication_title),
+                        text = stringResource(
+                            if (state.isEditing) R.string.edit_medication_title
+                            else R.string.add_medication_title
+                        ),
                         style = MaterialTheme.typography.titleMedium
                     )
                 },
@@ -164,13 +170,16 @@ fun AddMedicationContent(
 
             // --- Cajas y unidades por caja ---
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                NumberField(
-                    value = state.boxes,
-                    onValueChange = actions.onBoxesChange,
-                    label = R.string.form_boxes,
-                    showError = state.showErrors && state.boxesError,
-                    modifier = Modifier.weight(1f)
-                )
+                // Al editar no se toca el stock: se ajusta con los botones +/- de la lista.
+                if (!state.isEditing) {
+                    NumberField(
+                        value = state.boxes,
+                        onValueChange = actions.onBoxesChange,
+                        label = R.string.form_boxes,
+                        showError = state.showErrors && state.boxesError,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
                 NumberField(
                     value = state.unitsPerBox,
                     onValueChange = actions.onUnitsPerBoxChange,
@@ -239,6 +248,13 @@ fun AddMedicationContent(
             FirstIntakePickers(state = state, actions = actions)
 
             // --- Guardar ---
+            if (state.loadFailed) {
+                Text(
+                    text = stringResource(R.string.error_load),
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
             if (state.saveFailed) {
                 Text(
                     text = stringResource(R.string.error_save),
@@ -248,7 +264,7 @@ fun AddMedicationContent(
             }
             Button(
                 onClick = actions.onSave,
-                enabled = !state.saving,
+                enabled = !state.saving && !state.loadFailed,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(stringResource(R.string.form_save))

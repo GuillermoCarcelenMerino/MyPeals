@@ -11,11 +11,15 @@ import com.mypeals.ui.treatments.TreatmentsScreen
 fun appEntryProvider(navigator: AppNavigator) = entryProvider<NavKey> {
     entry<TreatmentsNavigation.Treatments> {
         TreatmentsScreen(
-            onAddMedication = { navigator.navigate(TreatmentsNavigation.AddMedication) }
+            onAddMedication = { navigator.navigate(TreatmentsNavigation.AddMedication) },
+            onEditMedication = { navigator.navigate(TreatmentsNavigation.EditMedication(it)) }
         )
     }
     entry<TreatmentsNavigation.AddMedication> {
         AddMedicationScreen(onBack = navigator::goBack)
+    }
+    entry<TreatmentsNavigation.EditMedication> { key ->
+        AddMedicationScreen(medicationId = key.medicationId, onBack = navigator::goBack)
     }
     entry<AccountNavigation.Profile> {
         AccountScreen()

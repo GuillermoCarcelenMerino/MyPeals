@@ -11,8 +11,8 @@
     <string name="add_medication">Add new medication</string>
     <string name="empty_treatments_title">No medication yet</string>
     <string name="empty_treatments_hint">Tap + to add your first medication</string>
-    <string name="decrease_quantity">Decrease quantity</string>
-    <string name="increase_quantity">Increase quantity</string>
+    <string name="decrease_quantity">Decrease quantity of %s</string>
+    <string name="increase_quantity">Increase quantity of %s</string>
 
     <!-- Tipos de medicación -->
     <string name="medication_type_pill">Pill</string>
@@ -89,4 +89,14 @@
     <string name="reminder_permission_notifications">Allow notifications so MyPeals can remind you to take your medication.</string>
     <string name="reminder_permission_exact_alarms">Allow exact alarms so reminders arrive on time.</string>
     <string name="reminder_permission_allow">Allow</string>
+    <string name="edit_medication_title">Edit medication</string>
+    <string name="error_load">Could not load the medication.</string>
+    <string name="more_options">More options for %s</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_pause">Pause treatment</string>
+    <string name="menu_resume">Resume treatment</string>
+    <string name="menu_delete">Delete</string>
+    <string name="treatment_paused">Paused</string>
+    <string name="delete_confirm_title">Delete medication?</string>
+    <string name="delete_confirm_message">%s and its reminders will be deleted. This cannot be undone.</string>
 </resources>

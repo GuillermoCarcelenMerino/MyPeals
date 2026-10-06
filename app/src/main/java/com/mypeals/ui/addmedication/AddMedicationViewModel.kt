@@ -7,6 +7,8 @@ import com.mypeals.core.domain.model.FrequencyUnit
 import com.mypeals.core.domain.model.MedicationType
 import com.mypeals.core.domain.model.Weekday
 import com.mypeals.core.domain.usecase.AddMedicationUseCase
+import com.mypeals.core.domain.usecase.GetMedicationUseCase
+import com.mypeals.core.domain.usecase.UpdateMedicationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,11 +19,35 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddMedicationViewModel @Inject constructor(
-    private val addMedicationUseCase: AddMedicationUseCase
+    private val addMedicationUseCase: AddMedicationUseCase,
+    private val updateMedicationUseCase: UpdateMedicationUseCase,
+    private val getMedicationUseCase: GetMedicationUseCase
 ) : ViewModel() {
+
+    private var loadedId: Int? = null
 
     private val _uiState = MutableStateFlow(AddMedicationUiState.initial())
     val uiState: StateFlow<AddMedicationUiState> = _uiState.asStateFlow()
+
+    /** Carga una medicación para editarla. Solo lo hace una vez por id. */
+    fun load(id: Int) {
+        if (loadedId == id) return
+        loadedId = id
+        viewModelScope.launch {
+            getMedicationUseCase(id)
+                .onSuccess { medication ->
+                    if (medication != null) {
+                        _uiState.value = AddMedicationUiState.fromMedication(medication)
+                    } else {
+                        _uiState.update { it.copy(loadFailed = true) }
+                    }
+                }
+                .onFailure { error ->
+                    Log.e(TAG, "Error al cargar la medicación", error)
+                    _uiState.update { it.copy(loadFailed = true) }
+                }
+        }
+    }
 
     fun onNameChange(name: String) = _uiState.update { it.copy(name = name) }
 
@@ -60,10 +86,15 @@ class AddMedicationViewModel @Inject constructor(
         }
         _uiState.update { it.copy(saving = true, saveFailed = false) }
         viewModelScope.launch {
-            addMedicationUseCase(medication)
+            val result = if (current.isEditing) {
+                updateMedicationUseCase(medication)
+            } else {
+                addMedicationUseCase(medication).map { }
+            }
+            result
                 .onSuccess { onSaved() }
                 .onFailure { error ->
-                    Log.e(TAG, "Error al añadir la medicación", error)
+                    Log.e(TAG, "Error al guardar la medicación", error)
                     _uiState.update { it.copy(saving = false, saveFailed = true) }
                 }
         }
