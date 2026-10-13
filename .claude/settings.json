@@ -3,10 +3,19 @@
     "deny": [
       "Read(keystore/**)",
       "Edit(keystore/**)",
+      "Read(keystore.properties)",
+      "Edit(keystore.properties)",
+      "Bash(cat keystore*)",
+      "PowerShell(Get-Content keystore*)",
       "Edit(local.properties)"
     ],
     "ask": [
       "Bash(git push:*)",
+      "PowerShell(git push:*)",
+      "Bash(gh pr create:*)",
+      "PowerShell(gh pr create:*)",
+      "Bash(gh pr merge:*)",
+      "PowerShell(gh pr merge:*)",
       "Edit(gradle/libs.versions.toml)",
       "Edit(app/build.gradle.kts)"
     ],
