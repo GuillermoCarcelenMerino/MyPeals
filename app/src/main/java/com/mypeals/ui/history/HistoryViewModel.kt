@@ -1,19 +1,15 @@
 package com.mypeals.ui.history
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mypeals.core.domain.model.HistoryDay
 import com.mypeals.core.domain.model.HistoryEntry
 import com.mypeals.core.domain.model.IntakeStatus
 import com.mypeals.core.domain.usecase.ObserveIntakeHistoryUseCase
 import com.mypeals.core.domain.usecase.RegisterIntakeUseCase
+import com.mypeals.ui.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,19 +22,18 @@ data class HistoryUiState(
 class HistoryViewModel @Inject constructor(
     observeIntakeHistory: ObserveIntakeHistoryUseCase,
     private val registerIntake: RegisterIntakeUseCase
-) : ViewModel() {
+) : BaseViewModel<HistoryUiState>(HistoryUiState(loading = true)) {
 
-    val uiState: StateFlow<HistoryUiState> = observeIntakeHistory()
-        .map { HistoryUiState(days = it, loading = false) }
-        .catch { error ->
-            Log.e(TAG, "Error al construir el historial", error)
-            emit(HistoryUiState(loading = false))
+    init {
+        observe(
+            observeIntakeHistory().catch { error ->
+                Log.e(TAG, "Error al construir el historial", error)
+                publish { it.copy(loading = false) }
+            }
+        ) { days ->
+            publish { it.copy(days = days, loading = false) }
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
-            initialValue = HistoryUiState(loading = true)
-        )
+    }
 
     /** Marca a mano como tomada una toma que quedó sin registrar (descuenta el stock). */
     fun markTaken(entry: HistoryEntry) {
@@ -50,6 +45,5 @@ class HistoryViewModel @Inject constructor(
 
     private companion object {
         const val TAG = "HistoryViewModel"
-        const val STOP_TIMEOUT_MILLIS = 5_000L
     }
 }

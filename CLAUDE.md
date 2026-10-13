@@ -22,7 +22,7 @@ En Windows usar `gradlew.bat`; en macOS/Linux, `./gradlew`.
 - `appfunctions/` — funciones expuestas al asistente de voz
 
 ## Convenciones
-- Estado de pantalla: un `data class XxxUiState` inmutable por pantalla. El ViewModel lo expone como `StateFlow<XxxUiState>` y lo modifica solo con `_uiState.update { it.copy(...) }`. La pantalla lo recoge con `collectAsStateWithLifecycle()` y solo llama a funciones `onXxx(...)` del ViewModel; no tiene lógica de negocio
+- Estado de pantalla: un `data class XxxUiState` inmutable por pantalla. El ViewModel hereda de `BaseViewModel<XxxUiState>` (`ui/common`), que expone `uiState: StateFlow<XxxUiState>`; el estado se modifica solo con `publish { it.copy(...) }` y los Flow de los casos de uso se recogen con `observe(flow) { ... }`. La pantalla lo recoge con `collectAsStateWithLifecycle()` y solo llama a funciones `onXxx(...)` del ViewModel; no tiene lógica de negocio
 - Dependencias entre capas: domain no importa `android.*`/`androidx.*` ni nada de `core.data` o `ui` (solo se permite `javax.inject`). La UI no importa `core.data`: accede a los datos siempre a través de los casos de uso
 - Casos de uso: Kotlin puro, una responsabilidad por clase, con `operator fun invoke(...)`. Solo dependen de interfaces de domain y de otros casos de uso
 - Repositorios: interfaz en `core/domain/repository`, implementación en `core/data/repository`; enlazados en `core/di`
