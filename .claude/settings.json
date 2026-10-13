@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(keystore/**)",
+      "Edit(keystore/**)",
+      "Edit(local.properties)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Edit(gradle/libs.versions.toml)"
+    ]
+  }
+}
