@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.navigation3.runtime.NavKey
 import com.mypeals.R
+import com.mypeals.ui.alerts.AlertsNavigation
 import com.mypeals.ui.history.HistoryNavigation
 import com.mypeals.ui.treatments.TreatmentsNavigation
 
@@ -29,5 +30,10 @@ val topLevelDestinations: List<TopLevelDestination> = listOf(
         key = HistoryNavigation.History,
         label = R.string.nav_history,
         icon = R.drawable.ic_history
+    ),
+    TopLevelDestination(
+        key = AlertsNavigation.Alerts,
+        label = R.string.nav_alerts,
+        icon = R.drawable.ic_alerts
     ),
 )
