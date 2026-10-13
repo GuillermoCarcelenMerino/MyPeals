@@ -7,8 +7,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.room)
-
-
+    alias(libs.plugins.kover)
 }
 
 val keystoreProperties = Properties().apply {
@@ -69,6 +68,36 @@ android {
 }
 ksp {
     arg("appfunctions:aggregateAppFunctions", "true")
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                // Código generado por Room, Hilt y appfunctions: no lo escribimos ni lo testeamos
+                classes(
+                    "*_Impl", "*_Impl\$*",
+                    "*_Factory", "*_Factory\$*",
+                    "*_MembersInjector",
+                    "*Hilt_*",
+                    "*_HiltModules*",
+                    "*AppFunctionInventory*", "*AppFunctionInvoker*",
+                    "*ComposableSingletons*",
+                )
+                packages(
+                    "hilt_aggregated_deps",
+                    "appfunctions_aggregated_deps",
+                    "dagger.hilt.internal.aggregatedroot.codegen",
+                    "androidx.appfunctions",
+                )
+                // Configuración y arranque de Android: sin lógica propia que testear en unidad
+                packages("com.mypeals.core.theme", "com.mypeals.core.di", "com.mypeals.core.data.room.dao")
+                classes("com.mypeals.MainActivity*", "com.mypeals.Application*", "com.mypeals.core.data.room.AppDataBase*")
+                // UI de Compose: se prueba con los tests instrumentados de src/androidTest
+                annotatedBy("androidx.compose.runtime.Composable")
+            }
+        }
+    }
 }
 
 room {
