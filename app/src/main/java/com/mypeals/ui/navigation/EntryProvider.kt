@@ -3,6 +3,8 @@ package com.mypeals.ui.navigation
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import com.mypeals.ui.addmedication.AddMedicationScreen
+import com.mypeals.ui.alerts.AlertsNavigation
+import com.mypeals.ui.alerts.AlertsScreen
 import com.mypeals.ui.history.HistoryNavigation
 import com.mypeals.ui.history.HistoryScreen
 import com.mypeals.ui.treatments.TreatmentsNavigation
@@ -23,5 +25,8 @@ fun appEntryProvider(navigator: AppNavigator) = entryProvider<NavKey> {
     }
     entry<HistoryNavigation.History> {
         HistoryScreen()
+    }
+    entry<AlertsNavigation.Alerts> {
+        AlertsScreen()
     }
 }
