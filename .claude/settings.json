@@ -9,6 +9,10 @@
       "Bash(git push:*)",
       "Edit(gradle/libs.versions.toml)",
       "Edit(app/build.gradle.kts)"
+    ],
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }
