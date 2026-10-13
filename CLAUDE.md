@@ -46,4 +46,6 @@ En Windows usar `gradlew.bat`; en macOS/Linux, `./gradlew`.
 1. Comprobar la compilación (`assembleDebug`)
 2. Ejecutar los tests de unidad y, si se ha tocado UI o base de datos, también los instrumentados
 3. Pasar `lint` sin errores nuevos
-4. Generar documentación del nuevo desarrollo en `docs/<nombre_de_la_rama>.md`: qué hace, archivos principales y cómo probarlo
+4. Ejecutar reporte de kover.
+5. Generar documentación del nuevo desarrollo en `docs/<nombre_de_la_rama>.md`: qué hace, archivos principales y cómo probarlo
+6. Añadir en notas-ia.md un resumen de la ejecución donde se pondra : 1- promp utilizado, 2- resumen de cambios y si se ha ejecutado con exito, las comprobaciones de compilación y test. 3- tiempo de ejecución 4- resumen de porcentaje de kover
