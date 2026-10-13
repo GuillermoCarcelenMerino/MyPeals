@@ -29,3 +29,6 @@ Las pantallas no cambian: siguen leyendo `viewModel.uiState`. La convención de 
 - Tests de unidad: `gradlew.bat testDebugUnitTest`. `BaseViewModelTest` comprueba el estado inicial, `publish`/`currentState`, que el flujo no se recoge sin observadores y que se detiene tras el timeout y vuelve a empezar con un nuevo observador.
 - Tests instrumentados: `gradlew.bat connectedDebugAndroidTest`. Las pantallas se comportan igual que antes.
 - Manual: añade, edita, pausa y borra una medicación y marca una toma en el Historial. Las listas se actualizan solas igual que antes.
+
+## Integración con la pantalla de Alertas
+Tras fusionar `master` (que ya incluye `feature/pantalla_alertas`), `AlertsViewModel` también hereda de `BaseViewModel<AlertsUiState>` y usa `observe` + `publish`. Así el refresco de la cuenta atrás se sigue parando cuando la pantalla no está visible.
