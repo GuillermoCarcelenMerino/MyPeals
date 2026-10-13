@@ -115,4 +115,32 @@
     <string name="history_empty_title">No doses to show yet</string>
     <string name="history_empty_hint">Your scheduled doses, and whether you took them, will appear here.</string>
     <string name="next_intake">Next dose: %s</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="alerts_title">Alerts</string>
+    <string name="alerts_section_upcoming">Upcoming</string>
+    <string name="alerts_section_inactive">No pending alerts</string>
+    <string name="alerts_schedule">%1$s · %2$s</string>
+    <plurals name="alerts_every_hours">
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
+    <plurals name="alerts_every_days">
+        <item quantity="one">Every day</item>
+        <item quantity="other">Every %d days</item>
+    </plurals>
+    <plurals name="alerts_every_weeks">
+        <item quantity="one">Every week</item>
+        <item quantity="other">Every %d weeks</item>
+    </plurals>
+    <string name="alerts_next_at">Next alert: %s</string>
+    <string name="alerts_today_at">today at %s</string>
+    <string name="alerts_tomorrow_at">tomorrow at %s</string>
+    <string name="alerts_remaining">In %s</string>
+    <string name="alerts_remaining_now">Now</string>
+    <string name="alerts_unit_days">%d d</string>
+    <string name="alerts_unit_hours">%d h</string>
+    <string name="alerts_unit_minutes">%d min</string>
+    <string name="alerts_no_upcoming">No alerts</string>
+    <string name="alerts_empty_title">No alerts configured</string>
+    <string name="alerts_empty_hint">Add a medication with a schedule and its alerts will appear here.</string>
 </resources>

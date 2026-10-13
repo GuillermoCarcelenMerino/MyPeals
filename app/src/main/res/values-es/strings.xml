@@ -113,4 +113,35 @@
     <string name="history_empty_title">Aún no hay tomas que mostrar</string>
     <string name="history_empty_hint">Aquí verás las tomas que te tocaban y si las tomaste o no.</string>
     <string name="next_intake">Próxima toma: %s</string>
+    <string name="nav_alerts">Alertas</string>
+    <string name="alerts_title">Alertas</string>
+    <string name="alerts_section_upcoming">Próximas</string>
+    <string name="alerts_section_inactive">Sin alertas pendientes</string>
+    <string name="alerts_schedule">%1$s · %2$s</string>
+    <plurals name="alerts_every_hours">
+        <item quantity="one">Cada hora</item>
+        <item quantity="many">Cada %d horas</item>
+        <item quantity="other">Cada %d horas</item>
+    </plurals>
+    <plurals name="alerts_every_days">
+        <item quantity="one">Cada día</item>
+        <item quantity="many">Cada %d días</item>
+        <item quantity="other">Cada %d días</item>
+    </plurals>
+    <plurals name="alerts_every_weeks">
+        <item quantity="one">Cada semana</item>
+        <item quantity="many">Cada %d semanas</item>
+        <item quantity="other">Cada %d semanas</item>
+    </plurals>
+    <string name="alerts_next_at">Próxima alerta: %s</string>
+    <string name="alerts_today_at">hoy a las %s</string>
+    <string name="alerts_tomorrow_at">mañana a las %s</string>
+    <string name="alerts_remaining">En %s</string>
+    <string name="alerts_remaining_now">Ahora</string>
+    <string name="alerts_unit_days">%d d</string>
+    <string name="alerts_unit_hours">%d h</string>
+    <string name="alerts_unit_minutes">%d min</string>
+    <string name="alerts_no_upcoming">Sin alertas</string>
+    <string name="alerts_empty_title">No hay alertas configuradas</string>
+    <string name="alerts_empty_hint">Añade una medicación con horario y aquí verás sus alertas.</string>
 </resources>
