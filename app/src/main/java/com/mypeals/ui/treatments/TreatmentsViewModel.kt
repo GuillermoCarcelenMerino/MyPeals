@@ -1,18 +1,14 @@
 package com.mypeals.ui.treatments
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mypeals.core.domain.model.Medication
 import com.mypeals.core.domain.usecase.DeleteMedicationUseCase
 import com.mypeals.core.domain.usecase.ObserveMedicationsUseCase
 import com.mypeals.core.domain.usecase.UpdateMedicationUseCase
+import com.mypeals.ui.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,20 +17,19 @@ class TreatmentsViewModel @Inject constructor(
     observeMedicationsUseCase: ObserveMedicationsUseCase,
     private val updateMedicationUseCase: UpdateMedicationUseCase,
     private val deleteMedicationUseCase: DeleteMedicationUseCase
-) : ViewModel() {
+) : BaseViewModel<TreatmentsUiState>(TreatmentsUiState(loading = true)) {
 
-    // La lista se alimenta del Flow de Room: cualquier alta o cambio se refleja solo.
-    val uiState: StateFlow<TreatmentsUiState> = observeMedicationsUseCase()
-        .map { TreatmentsUiState(medications = it, loading = false) }
-        .catch { error ->
-            Log.e(TAG, "Error al observar la medicación", error)
-            emit(TreatmentsUiState(loading = false))
+    init {
+        // La lista se alimenta del Flow de Room: cualquier alta o cambio se refleja solo.
+        observe(
+            observeMedicationsUseCase().catch { error ->
+                Log.e(TAG, "Error al observar la medicación", error)
+                publish { it.copy(loading = false) }
+            }
+        ) { medications ->
+            publish { it.copy(medications = medications, loading = false) }
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
-            initialValue = TreatmentsUiState(loading = true)
-        )
+    }
 
     fun updateQuantity(medication: Medication, remainingUnits: Int) {
         viewModelScope.launch {
@@ -60,6 +55,5 @@ class TreatmentsViewModel @Inject constructor(
 
     private companion object {
         const val TAG = "TreatmentsViewModel"
-        const val STOP_TIMEOUT_MILLIS = 5_000L
     }
 }
