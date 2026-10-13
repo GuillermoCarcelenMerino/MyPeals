@@ -12,6 +12,7 @@ En Windows usar `gradlew.bat`; en macOS/Linux, `./gradlew`.
 - Tests de unidad: `gradlew.bat testDebugUnitTest`
 - Tests instrumentados (requiere emulador o dispositivo, comprobar con `adb devices`): `gradlew.bat connectedDebugAndroidTest`
 - Lint: `gradlew.bat lint`
+- kover: .\gradlew.bat koverVerifyDebug
 
 ## Estructura
 - `core/domain/` — Kotlin puro: `model/`, `repository/` (interfaces), `usecase/`, `reminder/` (interfaces)
@@ -46,6 +47,6 @@ En Windows usar `gradlew.bat`; en macOS/Linux, `./gradlew`.
 1. Comprobar la compilación (`assembleDebug`)
 2. Ejecutar los tests de unidad y, si se ha tocado UI o base de datos, también los instrumentados
 3. Pasar `lint` sin errores nuevos
-4. Ejecutar reporte de kover.
+4. Ejecutar reporte de kover y pasa el minimo definido en el gradle
 5. Generar documentación del nuevo desarrollo en `docs/<nombre_de_la_rama>.md`: qué hace, archivos principales y cómo probarlo
 6. Añadir en notas-ia.md un resumen de la ejecución donde se pondra : 1- promp utilizado, 2- resumen de cambios y si se ha ejecutado con exito, las comprobaciones de compilación y test. 3- tiempo de ejecución 4- resumen de porcentaje de kover

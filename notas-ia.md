@@ -21,3 +21,40 @@ Promp 2 :
   - Comprobaciones de test, lint y compilacción --> pasado
   - Documentación generada--> pasado
   - Solicitud de push --> pasado
+
+Promp 3 :
+- Tarea : Generar tests unitarios para los viewmodels con un 80% de cobertura
+- Promp: "quiero que generes test unitarios para las los viewmodels y que cubras un 80% de esas clases"
+- Resumen de cambios:
+  - Tests nuevos: AddMedicationViewModelTest (12), AlertsViewModelTest (5), HistoryViewModelTest (5) y TreatmentsViewModelTest (9)
+  - Fakes compartidos en ui/testing (repositorio y programador de avisos), MainDispatcherRule y un sustituto de android.util.Log para los tests
+  - Nueva dependencia de test kotlinx-coroutines-test 1.9.0 (confirmada por el usuario) para sustituir Dispatchers.Main
+- Resultado :
+  - Tiempo de ~10m
+  - Resultado esperado --> pasado
+  - Compilación (assembleDebug) --> pasado
+  - Tests de unidad (93 tests, 0 fallos) --> pasado
+  - Tests instrumentados --> no ejecutados (no se toca UI ni base de datos)
+  - Lint --> pasado, 0 errores (1 aviso nuevo: hay una versión más nueva de kotlinx-coroutines-test, se mantiene la 1.9.0 para igualar kotlinx-coroutines-core)
+  - Documentación generada (docs/feature_tests_viewmodels.md) --> pasado
+- Kover:
+  - AddMedicationViewModel, AlertsViewModel, HistoryViewModel, TreatmentsViewModel y BaseViewModel: 100% de líneas
+  - Total del proyecto: 62,8% de líneas, 66,8% de instrucciones y 55,3% de ramas
+
+Promp 4 :
+- Tarea : Sustituir el sustituto de android.util.Log de los tests por testOptions en Gradle
+- Promp: "modifica el uso de la clase nueva de Log con el uso de estOptions { unitTests.isReturnDefaultValues = true } en el gradle, para esta modificación te doy permiso"
+- Resumen de cambios:
+  - Eliminado app/src/test/java/android/util/Log.kt
+  - app/build.gradle.kts: testOptions { unitTests.isReturnDefaultValues = true } (con permiso del usuario)
+  - Actualizada docs/feature_tests_viewmodels.md
+- Resultado :
+  - Tiempo de ~2m
+  - Resultado esperado --> pasado
+  - Compilación (assembleDebug) --> pasado
+  - Tests de unidad (93 tests, 0 fallos) --> pasado
+  - Tests instrumentados --> no ejecutados (no se toca UI ni base de datos)
+  - Lint --> pasado, 0 errores
+  - koverVerifyDebug (mínimo 60% de líneas) --> pasado
+- Kover:
+  - Total del proyecto: 62,8% de líneas (sin cambios)
