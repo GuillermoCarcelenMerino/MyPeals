@@ -29,8 +29,8 @@ Los ViewModels se crean con los casos de uso reales sobre un repositorio y un pr
 - `app/src/test/java/com/mypeals/ui/treatments/TreatmentsViewModelTest.kt`
 - `app/src/test/java/com/mypeals/ui/testing/ViewModelFakes.kt`: `FakeMedicationRepository` (puede forzar fallos con `failWith`), `FakeReminderScheduler`, `medication(...)` y los helpers `awaitUntil`, `subscribe` (simula a la pantalla observando el estado) y `close`.
 - `app/src/test/java/com/mypeals/ui/testing/MainDispatcherRule.kt`: regla JUnit que sustituye `Dispatchers.Main`.
-- `app/src/test/java/android/util/Log.kt`: sustituto de `android.util.Log` para los tests de unidad. El `android.jar` de los tests no lo implementa y las ramas de error, que registran con `Log.e`, fallarían.
 - `gradle/libs.versions.toml`, `app/build.gradle.kts`: la dependencia `kotlinx-coroutines-test`.
+- `app/build.gradle.kts`: `testOptions { unitTests.isReturnDefaultValues = true }`. El `android.jar` de los tests no implementa `android.util.Log`; con esta opción `Log.e` devuelve un valor por defecto y las ramas de error, que registran con `Log.e`, no fallan.
 
 ## Cómo probarlo
 - Tests de unidad: `gradlew.bat testDebugUnitTest`

@@ -63,8 +63,10 @@ android {
     buildFeatures {
         compose = true
     }
-
-
+    testOptions {
+        // android.jar de los tests no implementa sus métodos (p. ej. Log.e): que devuelvan valores por defecto
+        unitTests.isReturnDefaultValues = true
+    }
 }
 ksp {
     arg("appfunctions:aggregateAppFunctions", "true")
@@ -97,6 +99,7 @@ kover {
                 annotatedBy("androidx.compose.runtime.Composable")
             }
         }
+        verify { rule { minBound(60) } }
     }
 }
 
