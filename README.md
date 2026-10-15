@@ -1,6 +1,23 @@
 # MyPeals
 
+[![CI](https://github.com/GuillermoCarcelenMerino/MyPeals/actions/workflows/ci.yml/badge.svg)](https://github.com/GuillermoCarcelenMerino/MyPeals/actions/workflows/ci.yml)
+
 App Android de registro y control de toma de medicamentos.
+
+## Integración continua (CI)
+
+El repositorio usa GitHub Actions (`.github/workflows/ci.yml`). Se ejecuta en cada pull request hacia `master`: al abrirla, con cada push nuevo y al reabrirla.
+
+| Paso | Comando |
+|---|---|
+| Compilar en release (con R8) | `assembleRelease` |
+| Lint de la variante release | `lintRelease` |
+| Tests de unidad | `testDebugUnitTest` |
+| Cobertura mínima | `koverVerifyDebug` |
+
+- En CI la build de release se firma con la clave **debug**: no hay `keystore.properties` ni clave de subida en el repositorio, y el APK que genera no se publica.
+- Los tests instrumentados no se ejecutan en CI (necesitan un emulador o dispositivo); se lanzan en local con `connectedDebugAndroidTest`.
+- Todavía **no hay CD**: las versiones para Google Play se generan y firman en local.
 
 ## Testing
 

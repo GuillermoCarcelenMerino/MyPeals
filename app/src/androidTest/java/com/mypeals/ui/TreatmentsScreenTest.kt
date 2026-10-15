@@ -33,6 +33,7 @@ class TreatmentsScreenTest {
     @get:Rule
     val rule = createComposeRule()
 
+
     private fun medication(
         id: Int = 1,
         name: String = "Ibuprofeno",
