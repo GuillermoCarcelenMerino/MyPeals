@@ -22,6 +22,7 @@ roomRuntime = "2.8.4"
 ksp = "2.3.4"
 kover = "0.9.11"
 coroutinesTest = "1.9.0"
+securestore = "0.1.0"
 
 [libraries]
 #navigation
@@ -56,6 +57,7 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+securestore = { module = "io.github.guillermocarcelenmerino:securestore", version.ref = "securestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

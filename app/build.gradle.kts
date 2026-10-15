@@ -148,4 +148,8 @@ dependencies {
     implementation(libs.androidx.appfunctions.service)
     ksp(libs.androidx.appfunctions.compiler)
 
+    //sdk unused but imported
+    implementation(libs.securestore)
+
+
 }
