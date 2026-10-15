@@ -46,14 +46,17 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            if (keystoreProperties.isNotEmpty()) {
-                signingConfig = signingConfigs.getByName("release")
+            // Release key when keystore.properties exists; otherwise the debug key, so the
+            // release build can still be installed locally or in CI (never for uploading to Play).
+            signingConfig = if (keystoreProperties.isNotEmpty()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
             }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
